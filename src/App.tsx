@@ -1,26 +1,42 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-function App() {
+import Dashboard from './components/pages/Dashboard';
+import Path from './components/pages/Path';
+import Definition from './components/pages/Definition';
+
+const App = () => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+      },
+    },
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <Routes>
+            <Route
+              path='/'
+              element={<Dashboard />}
+            />
+            <Route
+              path='/path/:operationId'
+              element={<Path />}
+            />
+            <Route
+              path='/definition/:type'
+              element={<Definition />}
+            />
+          </Routes>
+        </Router>
+      </QueryClientProvider>
+    </>
   );
-}
+};
 
 export default App;
